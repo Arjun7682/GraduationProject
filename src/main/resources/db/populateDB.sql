@@ -17,8 +17,7 @@ VALUES ('User', 'user@yandex.ru', 'password'),
 
 INSERT INTO user_roles (role, user_id)
 VALUES ('ROLE_USER', 100000),
-       ('ROLE_ADMIN', 100001),
-       ('ROLE_USER', 100001);
+       ('ROLE_ADMIN', 100001);
 
 INSERT INTO restaurants (NAME)
 VALUES ('McDonalds'),
@@ -27,7 +26,7 @@ VALUES ('McDonalds'),
        ('Marketplace'),
        ('Big Kahuna Burger');
 
-INSERT INTO dishes (restaurant_id, date_time, dish, price)
+INSERT INTO dishes (restaurant_id, date_time, description, price)
 VALUES (100002, '2019-08-20 17:00:00', 'Burger', 16000),
        (100002, '2019-08-20 17:00:00', 'Fries', 7000),
        (100002, '2019-08-20 17:00:00', 'Americano', 5000),
@@ -44,5 +43,5 @@ VALUES (100002, '2019-08-20 17:00:00', 'Burger', 16000),
        (100006, '2019-08-20 17:00:00', 'Fries', 10000),
        (100006, '2019-08-20 17:00:00', 'Americano', 8000);
 
-INSERT INTO votes (user_id, restaurant_id)
-VALUES (100000, 100005);
+INSERT INTO votes (date_time, user_id, restaurant_id)
+VALUES ('2019-08-20 17:00:00', 100000, 100005);

@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public abstract class BaseEntity implements Persistable<Integer> {
+public abstract class AbstractBaseEntity implements Persistable<Integer> {
     public static final int START_SEQ = 100000;
 
     @Id
@@ -14,10 +14,10 @@ public abstract class BaseEntity implements Persistable<Integer> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     protected Integer id;
 
-    protected BaseEntity() {
+    protected AbstractBaseEntity() {
     }
 
-    protected BaseEntity(Integer id) {
+    protected AbstractBaseEntity(Integer id) {
         this.id = id;
     }
 

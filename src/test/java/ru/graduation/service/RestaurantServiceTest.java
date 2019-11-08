@@ -6,43 +6,40 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import ru.graduation.model.Role;
-import ru.graduation.model.User;
+import ru.graduation.model.Restaurant;
 import ru.graduation.util.exception.NotFoundException;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static ru.graduation.UserTestData.*;
+import static ru.graduation.RestaurantTestData.*;
 
 @SpringJUnitConfig(locations = "classpath:spring/spring-db.xml")
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-public class UserServiceTest {
+public class RestaurantServiceTest {
 
     @Autowired
-    private UserService service;
+    private RestaurantService service;
 
     @Test
     void create() throws Exception {
-        User newUser = new User(null, "New", "new@gmail.com", "newPass", LocalDateTime.now(), false, Collections.singleton(Role.ROLE_USER));
-        User created = service.create(new User(newUser));
-        newUser.setId(created.getId());
-        assertMatch(created, newUser);
-        assertMatch(service.getAll(), ADMIN, newUser, USER);
+        Restaurant newRestaurant = new Restaurant(null, "New");
+        Restaurant created = service.create(new Restaurant(newRestaurant));
+        newRestaurant.setId(created.getId());
+        assertMatch(created, newRestaurant);
+        assertMatch(service.getAll(), BIGKAHUNABURGER, KFC, MARKETPLACE, MCDONALDS, newRestaurant, TEREMOK);
     }
 
     @Test
-    void duplicateMailCreate() throws Exception {
+    void duplicateRestaurantCreate() throws Exception {
         assertThrows(DataAccessException.class, () ->
-                service.create(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.ROLE_USER)));
+                service.create(new Restaurant(null, "McDonalds")));
     }
 
     @Test
     void delete() throws Exception {
-        service.delete(USER_ID);
-        assertMatch(service.getAll(), ADMIN);
+        service.delete(KFC_ID);
+        assertMatch(service.getAll(), BIGKAHUNABURGER, MARKETPLACE, MCDONALDS, TEREMOK);
     }
 
     @Test
@@ -53,8 +50,8 @@ public class UserServiceTest {
 
     @Test
     void get() throws Exception {
-        User user = service.get(ADMIN_ID);
-        assertMatch(user, ADMIN);
+        Restaurant restaurant = service.get(MARKETPLACE_ID);
+        assertMatch(restaurant, MARKETPLACE);
     }
 
     @Test
@@ -64,24 +61,16 @@ public class UserServiceTest {
     }
 
     @Test
-    void getByEmail() throws Exception {
-        User user = service.getByEmail("admin@gmail.com");
-        assertMatch(user, ADMIN);
-    }
-
-    @Test
     void update() throws Exception {
-        User updated = new User(USER);
-        updated.setName("UpdatedName");
-        updated.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
-        service.update(new User(updated));
-        assertMatch(service.get(USER_ID), updated);
+        Restaurant updated = new Restaurant(MCDONALDS_ID, "UpdatedName");
+        service.update(updated);
+        assertMatch(service.get(MCDONALDS_ID), updated);
     }
 
     @Test
     void getAll() throws Exception {
-        List<User> all = service.getAll();
-        assertMatch(all, ADMIN, USER);
+        List<Restaurant> all = service.getAll();
+        assertMatch(all, RESTAURANTS);
     }
 
     /*@Test

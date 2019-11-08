@@ -9,6 +9,7 @@ import ru.graduation.repository.UserRepository;
 import java.util.List;
 
 import static ru.graduation.repository.UserRepository.SORT_NAME_EMAIL;
+import static ru.graduation.util.ValidationUtil.checkNotFoundWithId;
 
 @Service("userService")
 public class UserService {
@@ -26,16 +27,16 @@ public class UserService {
     }
 
     public User get(int id) {
-        return repository.findById(id).orElse(null);
+        return checkNotFoundWithId(repository.findById(id).orElse(null), id);
     }
 
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
-        repository.save(user);
+        checkNotFoundWithId(repository.save(user), user.getId());
     }
 
     public void delete(int id) {
-        repository.delete(id);
+        checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
     public User getByEmail(String email) {
