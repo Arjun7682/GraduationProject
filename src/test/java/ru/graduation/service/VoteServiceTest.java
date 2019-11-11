@@ -57,7 +57,7 @@ public class VoteServiceTest {
 
     /*@Test
     void update() throws Exception {
-        assumeFalse(LocalTime.now().isAfter(LocalTime.of(11, 0)), "Time for voting is Over, you may change your voice before 11AM");
+        assumeFalse(LocalTime.now().isAfter(LocalTime.of(11, 0)), "You can not vote after 11:00");
         Voice voice = new Voice(VOICE_1);
         voice.setRestaurant(RESTAURANT_4);
         int userId = VOICE_1.getUser().getId();

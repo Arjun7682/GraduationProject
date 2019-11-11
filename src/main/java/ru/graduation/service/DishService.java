@@ -1,11 +1,14 @@
 package ru.graduation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.graduation.model.Dish;
 import ru.graduation.model.Restaurant;
 import ru.graduation.repository.DishRepository;
+import ru.graduation.to.DishTo;
+import ru.graduation.util.DishUtil;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +17,9 @@ import static ru.graduation.util.ValidationUtil.checkNotFoundWithId;
 
 @Service("DishService")
 public class DishService {
+
+    private static final Sort SORT_BY_DATE = Sort.by(Sort.Order.desc("date"));
+
     private final DishRepository repository;
 
     @Autowired
@@ -35,6 +41,12 @@ public class DishService {
         checkNotFoundWithId(repository.save(dish), dish.getId());
     }
 
+    public void update(DishTo dishTo){
+        Assert.notNull(dishTo, "dish must not be null");
+        Dish dish = get(dishTo.getId());
+        checkNotFoundWithId(repository.save(DishUtil.updateFromTo(dish, dishTo)), dishTo.getId());
+    }
+
     public void delete(int id) {
         checkNotFoundWithId(repository.delete(id) != 0, id);
     }
@@ -46,4 +58,8 @@ public class DishService {
         LocalDateTime endDate = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 23, 59, 59);
         return repository.getDailyMenu(startDate, endDate, restaurant);
     }
+
+    /*public List<Dish> getAllByRestaurantId(int restaurantId){
+        return repository.getDishesByRestaurantId(restaurantId, SORT_BY_DATE);
+    }*/
 }

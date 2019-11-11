@@ -6,6 +6,7 @@ import org.springframework.util.Assert;
 import ru.graduation.model.Restaurant;
 import ru.graduation.repository.RestaurantRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static ru.graduation.repository.RestaurantRepository.SORT_NAME;
@@ -40,5 +41,13 @@ public class RestaurantService {
 
     public List<Restaurant> getAll() {
         return repository.findAll(SORT_NAME);
+    }
+
+    public List<Restaurant> getRestaurantsByDate(LocalDateTime date){
+        return repository.getRestaurantsByDate(date);
+    }
+
+    public Restaurant getWithDish(int id){
+        return checkNotFoundWithId(repository.getWithDishes(id), id);
     }
 }

@@ -8,6 +8,8 @@ import ru.graduation.model.Vote;
 import ru.graduation.repository.RestaurantRepository;
 import ru.graduation.repository.UserRepository;
 import ru.graduation.repository.VoteRepository;
+import ru.graduation.to.VoteTo;
+import ru.graduation.util.Util;
 
 import java.util.List;
 
@@ -37,17 +39,30 @@ public class VoteService {
         } else {
             return get(vote.getId(), userId) == null ? null : voteRepository.save(vote);
         }
+    }
 
+    public Vote create(VoteTo voteTo, int userId) {
+        Assert.notNull(voteTo, " voice must be not null ");
+        Vote voice = new Vote(voteTo.getDateTime(), restaurantRepository.getOne(voteTo.getRestaurantId()), userRepository.getOne(userId));
+        if (voice.isNew()) {
+            return voteRepository.save(voice);
+        } else {
+            return get(voice.getId(), userId) == null ? null : voteRepository.save(voice);
+        }
     }
 
     public Vote get(int id, int userId) {
         return checkNotFoundWithId(voteRepository.getVoteByIdAndUser_Id(id, userId), id);
     }
 
-    /*public void update(Vote vote) {
-        Assert.notNull(vote, "vote must not be null");
-        checkNotFoundWithId(voteRepository.save(vote), user.getId());
-    }*/
+    public void update(VoteTo voteTo, int userId){
+        Assert.notNull(voteTo, " voteTo must be not null ");
+        Vote vote = get(voteTo.getId(), userId);
+        Util.checkVoteDate(voteTo.getDateTime().toLocalDate(), vote.getDateTime().toLocalDate());
+        Util.checkVoteTime();
+        vote.setRestaurant(restaurantRepository.getOne(voteTo.getRestaurantId()));
+        checkNotFoundWithId(create(vote, userId), vote.getId());
+    }
 
     public void delete(int id, int userId) {
         checkDateTimeValid();
