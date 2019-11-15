@@ -20,16 +20,15 @@ import static ru.graduation.UserTestData.*;
 import static ru.graduation.VoteTestData.USER_VOTE_ID;
 import static ru.graduation.VoteTestData.VOTE;
 
-//@Transactional
-@SpringJUnitConfig(locations = "classpath:spring/spring-db.xml")
+@SpringJUnitConfig(locations = {
+        "classpath:spring/spring-app.xml",
+        "classpath:spring/spring-db.xml"
+})
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class VoteServiceTest {
 
     @Autowired
     VoteService voteService;
-
-    /*@Autowired
-    CrudVoiceRepository repository;*/
 
     @Test
     void create() throws Exception {
@@ -58,11 +57,11 @@ public class VoteServiceTest {
     /*@Test
     void update() throws Exception {
         assumeFalse(LocalTime.now().isAfter(LocalTime.of(11, 0)), "You can not vote after 11:00");
-        Voice voice = new Voice(VOICE_1);
-        voice.setRestaurant(RESTAURANT_4);
-        int userId = VOICE_1.getUser().getId();
-        voiceService.create(voice, userId);
-        VoiceTestData.assertMatch(voiceService.get(VOICE_1_ID, userId), voice);
+        Vote vote = new Vote(VOTE);
+        vote.setRestaurant(RESTAURANT_4);
+        int userId = VOTE.getUser().getId();
+        voteService.create(vote, userId);
+        VoteTestData.assertMatch(voteService.get(VOTE_ID, userId), vote);
     }*/
 
     @Test

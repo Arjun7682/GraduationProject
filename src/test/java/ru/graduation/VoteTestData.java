@@ -17,7 +17,7 @@ public class VoteTestData {
 
     public static final Vote VOTE = new Vote(USER_VOTE_ID, LocalDateTime.of(2019, 8, 20, 17, 0), MARKETPLACE, USER);
 
-    public static void assertMatch(Vote actual, Vote expected) {
+    public static <T> void assertMatch(T actual, T expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "restaurant", "user");
     }
 
@@ -29,4 +29,6 @@ public class VoteTestData {
     public static void assertMatch(Iterable<Vote> actual, Iterable<Vote> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("restaurant", "user").isEqualTo(expected);
     }
+
+
 }

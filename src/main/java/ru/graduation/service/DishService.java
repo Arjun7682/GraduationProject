@@ -1,12 +1,12 @@
 package ru.graduation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.graduation.model.Dish;
 import ru.graduation.model.Restaurant;
 import ru.graduation.repository.DishRepository;
+import ru.graduation.repository.RestaurantRepository;
 import ru.graduation.to.DishTo;
 import ru.graduation.util.DishUtil;
 
@@ -15,51 +15,48 @@ import java.util.List;
 
 import static ru.graduation.util.ValidationUtil.checkNotFoundWithId;
 
-@Service("DishService")
+@Service("dishService")
 public class DishService {
 
-    private static final Sort SORT_BY_DATE = Sort.by(Sort.Order.desc("date"));
-
-    private final DishRepository repository;
+    private final DishRepository dishRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public DishService(DishRepository repository) {
-        this.repository = repository;
+    public DishService(DishRepository dishRepository, RestaurantRepository restaurantRepository) {
+        this.dishRepository = dishRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     public Dish create(Dish dish) {
         Assert.notNull(dish, "dish must not be null");
-        return repository.save(dish);
+        return dishRepository.save(dish);
     }
 
     public Dish get(int id) {
-        return checkNotFoundWithId(repository.findById(id).orElse(null), id);
+        return checkNotFoundWithId(dishRepository.findById(id).orElse(null), id);
     }
 
     public void update(Dish dish) {
         Assert.notNull(dish, "dish must not be null");
-        checkNotFoundWithId(repository.save(dish), dish.getId());
+        checkNotFoundWithId(dishRepository.save(dish), dish.getId());
     }
 
     public void update(DishTo dishTo){
         Assert.notNull(dishTo, "dish must not be null");
         Dish dish = get(dishTo.getId());
-        checkNotFoundWithId(repository.save(DishUtil.updateFromTo(dish, dishTo)), dishTo.getId());
+        checkNotFoundWithId(dishRepository.save(DishUtil.updateFromTo(dish, dishTo)), dishTo.getId());
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id) != 0, id);
+        checkNotFoundWithId(dishRepository.delete(id) != 0, id);
     }
 
-    public List<Dish> getDailyMenu(Restaurant restaurant) {
-        Assert.notNull(restaurant, "restaurant must not be null");
+    public List<Dish> getDailyMenu(int restaurantId) {
+        Assert.notNull(restaurantId, "restaurant id must not be null");
+        Restaurant restaurant = restaurantRepository.getOne(restaurantId);
         LocalDateTime now = LocalDateTime.of(2019, 8, 20, 0, 0);//LocalDateTime.now();
         LocalDateTime startDate = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0);
         LocalDateTime endDate = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 23, 59, 59);
-        return repository.getDailyMenu(startDate, endDate, restaurant);
+        return dishRepository.getDailyMenu(startDate, endDate, restaurant);
     }
-
-    /*public List<Dish> getAllByRestaurantId(int restaurantId){
-        return repository.getDishesByRestaurantId(restaurantId, SORT_BY_DATE);
-    }*/
 }

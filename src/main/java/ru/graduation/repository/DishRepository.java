@@ -20,7 +20,5 @@ public interface DishRepository extends JpaRepository<Dish, Integer> {
 
     @Modifying
     @Query("SELECT d from Dish d WHERE  d.restaurant = :restaurant AND d.dateTime BETWEEN :startDate AND :endDate ORDER BY d.dateTime DESC")
-    List<Dish> getDailyMenu(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, /*@Param("userId") int userId,*/ @Param("restaurant")Restaurant restaurant);
-
-    //List<Dish> getDishesByRestaurantId(int restaurantId, Sort sort);
+    List<Dish> getDailyMenu(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("restaurant") Restaurant restaurant);
 }

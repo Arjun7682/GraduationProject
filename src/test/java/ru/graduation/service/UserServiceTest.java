@@ -17,7 +17,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.graduation.UserTestData.*;
 
-@SpringJUnitConfig(locations = "classpath:spring/spring-db.xml")
+@SpringJUnitConfig(locations = {
+        "classpath:spring/spring-app.xml",
+        "classpath:spring/spring-db.xml"
+})
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class UserServiceTest {
 

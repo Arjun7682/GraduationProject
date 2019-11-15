@@ -24,7 +24,6 @@ public class Dish extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    //@NotNull(groups = View.Persist.class)
     private Restaurant restaurant;
 
     @Column(name = "description", nullable = false)
@@ -38,6 +37,10 @@ public class Dish extends AbstractBaseEntity {
     private Integer price;
 
     public Dish() {
+    }
+
+    public Dish(Dish dish) {
+        this(dish.getId(), dish.getDateTime(), dish.getRestaurant(), dish.getDescription(), dish.getPrice());
     }
 
     public Dish(LocalDateTime dateTime, Restaurant restaurant, String description, Integer price) {

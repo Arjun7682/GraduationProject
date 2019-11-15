@@ -1,6 +1,8 @@
 package ru.graduation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,9 +19,11 @@ import java.util.List;
 
 import static ru.graduation.repository.UserRepository.SORT_NAME_EMAIL;
 import static ru.graduation.util.UserUtil.prepareToSave;
+import static ru.graduation.util.ValidationUtil.checkNotFound;
 import static ru.graduation.util.ValidationUtil.checkNotFoundWithId;
 
 @Service("userService")
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
@@ -64,7 +68,7 @@ public class UserService implements UserDetailsService {
 
     public User getByEmail(String email) {
         Assert.notNull(email, "email must not be null");
-        return repository.getByEmail(email);
+        return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
     public List<User> getAll() {

@@ -1,6 +1,7 @@
 package ru.graduation;
 
 import org.assertj.core.util.Lists;
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.graduation.model.Dish;
 
 import java.time.Month;
@@ -10,6 +11,7 @@ import java.util.List;
 import static java.time.LocalDateTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.graduation.RestaurantTestData.MCDONALDS;
+import static ru.graduation.TestUtil.readListFromJsonMvcResult;
 import static ru.graduation.model.AbstractBaseEntity.START_SEQ;
 
 public class DishTestData {
@@ -41,5 +43,9 @@ public class DishTestData {
 
     public static void assertMatch(Iterable<Dish> actual, Iterable<Dish> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("restaurant").isEqualTo(expected);
+    }
+
+    public static ResultMatcher contentJson(Dish... expected) {
+        return result -> assertMatch(readListFromJsonMvcResult(result, Dish.class), expected);
     }
 }

@@ -10,9 +10,12 @@ import ru.graduation.util.exception.NotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.graduation.DishTestData.*;
-import static ru.graduation.RestaurantTestData.MCDONALDS;
+import static ru.graduation.RestaurantTestData.MCDONALDS_ID;
 
-@SpringJUnitConfig(locations = "classpath:spring/spring-db.xml")
+@SpringJUnitConfig(locations = {
+        "classpath:spring/spring-app.xml",
+        "classpath:spring/spring-db.xml"
+})
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class DishServiceTest {
 
@@ -25,13 +28,13 @@ public class DishServiceTest {
         Dish created = service.create(newDish);
         newDish.setId(created.getId());
         assertMatch(newDish, created);
-        assertMatch(service.getDailyMenu(MCDONALDS), DISH1, DISH2, DISH3, newDish);
+        assertMatch(service.getDailyMenu(MCDONALDS_ID), DISH1, DISH2, DISH3, newDish);
     }
 
     @Test
     public void delete() throws Exception {
         service.delete(MAC_DISH_ID);
-        assertMatch(service.getDailyMenu(MCDONALDS), DISH2, DISH3);
+        assertMatch(service.getDailyMenu(MCDONALDS_ID), DISH2, DISH3);
     }
 
     @Test
@@ -59,22 +62,8 @@ public class DishServiceTest {
         assertMatch(service.get(MAC_DISH_ID), updated);
     }
 
-    /*@Test
-    public void updateNotFound() throws Exception {
-        thrown.expect(NotFoundException.class);
-        thrown.expectMessage("Not found entity with id=" + MEAL1_ID);
-        service.update(MEAL1, ADMIN_ID);
-    }*/
-
     @Test
     public void getAll() throws Exception {
-        assertMatch(service.getDailyMenu(MCDONALDS), MAC_DISHES);
+        assertMatch(service.getDailyMenu(MCDONALDS_ID), MAC_DISHES);
     }
-
-    /*@Test
-    public void getBetween() throws Exception {
-        assertMatch(service.getBetweenDates(
-                LocalDate.of(2015, Month.MAY, 30),
-                LocalDate.of(2015, Month.MAY, 30), USER_ID), MEAL3, MEAL2, MEAL1);
-    }*/
 }

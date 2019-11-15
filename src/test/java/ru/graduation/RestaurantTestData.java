@@ -1,12 +1,14 @@
 package ru.graduation;
 
 import org.assertj.core.util.Lists;
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.graduation.model.Restaurant;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.graduation.TestUtil.readListFromJsonMvcResult;
 import static ru.graduation.model.AbstractBaseEntity.START_SEQ;
 
 public class RestaurantTestData {
@@ -36,5 +38,9 @@ public class RestaurantTestData {
 
     public static void assertMatch(Iterable<Restaurant> actual, Iterable<Restaurant> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("dishes", "enabled").isEqualTo(expected);
+    }
+
+    public static ResultMatcher contentJson(Restaurant... expected) {
+        return result -> assertMatch(readListFromJsonMvcResult(result, Restaurant.class), Arrays.asList(expected));
     }
 }

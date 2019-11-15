@@ -74,10 +74,4 @@ public class RestaurantRestController {
     public List<RestaurantTo> getAll(@RequestParam(required = false) LocalDateTime localDateTime) {
         return service.getRestaurantsByDate(localDateTime == null ? LocalDateTime.now() : localDateTime).stream().map(RestaurantUtil::asTo).collect(Collectors.toList());
     }
-
-    @GetMapping
-    public List<Restaurant> getAllByDate(@RequestParam(required = false) LocalDateTime localDateTime) {
-        log.info("get all restaurants by date {}", localDateTime);
-        return service.getRestaurantsByDate(localDateTime == null ? LocalDateTime.now() : localDateTime);
-    }
 }

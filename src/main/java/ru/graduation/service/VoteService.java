@@ -9,12 +9,10 @@ import ru.graduation.repository.RestaurantRepository;
 import ru.graduation.repository.UserRepository;
 import ru.graduation.repository.VoteRepository;
 import ru.graduation.to.VoteTo;
-import ru.graduation.util.Util;
 
 import java.util.List;
 
-import static ru.graduation.util.ValidationUtil.checkDateTimeValid;
-import static ru.graduation.util.ValidationUtil.checkNotFoundWithId;
+import static ru.graduation.util.ValidationUtil.*;
 
 @Service("voteService")
 public class VoteService {
@@ -42,12 +40,12 @@ public class VoteService {
     }
 
     public Vote create(VoteTo voteTo, int userId) {
-        Assert.notNull(voteTo, " voice must be not null ");
-        Vote voice = new Vote(voteTo.getDateTime(), restaurantRepository.getOne(voteTo.getRestaurantId()), userRepository.getOne(userId));
-        if (voice.isNew()) {
-            return voteRepository.save(voice);
+        Assert.notNull(voteTo, " vote must be not null ");
+        Vote vote = new Vote(voteTo.getDateTime(), restaurantRepository.getRestaurantById(voteTo.getRestaurantId()), userRepository.getOne(userId));
+        if (vote.isNew()) {
+            return voteRepository.save(vote);
         } else {
-            return get(voice.getId(), userId) == null ? null : voteRepository.save(voice);
+            return get(vote.getId(), userId) == null ? null : voteRepository.save(vote);
         }
     }
 
@@ -55,17 +53,17 @@ public class VoteService {
         return checkNotFoundWithId(voteRepository.getVoteByIdAndUser_Id(id, userId), id);
     }
 
-    public void update(VoteTo voteTo, int userId){
+    public void update(VoteTo voteTo, int userId) {
         Assert.notNull(voteTo, " voteTo must be not null ");
         Vote vote = get(voteTo.getId(), userId);
-        Util.checkVoteDate(voteTo.getDateTime().toLocalDate(), vote.getDateTime().toLocalDate());
-        Util.checkVoteTime();
+        checkDateValid(voteTo.getDateTime().toLocalDate(), vote.getDateTime().toLocalDate());
+        checkTimeValid();
         vote.setRestaurant(restaurantRepository.getOne(voteTo.getRestaurantId()));
         checkNotFoundWithId(create(vote, userId), vote.getId());
     }
 
     public void delete(int id, int userId) {
-        checkDateTimeValid();
+        checkTimeValid();
         checkNotFoundWithId(voteRepository.delete(id, userId) != 0, id);
     }
 

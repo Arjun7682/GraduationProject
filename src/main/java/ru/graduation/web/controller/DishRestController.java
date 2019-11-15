@@ -18,6 +18,7 @@ import ru.graduation.to.DishTo;
 import ru.graduation.util.DishUtil;
 
 import java.net.URI;
+import java.util.List;
 
 import static ru.graduation.util.ValidationUtil.assureIdConsistent;
 
@@ -69,9 +70,9 @@ public class DishRestController {
         dishService.delete(id);
     }
 
-    /*@GetMapping
-    public List<Dish> getAllByRestaurantId(@RequestParam int restaurantId, @RequestParam(required = false) LocalDateTime localDateTime) {
+    @GetMapping
+    public List<Dish> getDailyMenu(@RequestParam int restaurantId) {
         log.info("get all dish by restaurant id {}", restaurantId);
-        return localDateTime == null ? dishService.getAllByRestaurantId(restaurantId) : dishService.getMealsByDate(localDateTime, restaurantId);
-    }*/
+        return dishService.getDailyMenu(restaurantId);
+    }
 }
