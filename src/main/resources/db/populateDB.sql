@@ -45,3 +45,13 @@ VALUES (100002, '2019-08-20 17:00:00', 'Burger', 16000),
 
 INSERT INTO votes (date_time, user_id, restaurant_id)
 VALUES ('2019-08-20 17:00:00', 100000, 100005);
+
+INSERT INTO users (name, email, password)
+VALUES ('Test1', 'test1@yandex.ru', '{noop}password1'),
+       ('Test2', 'test2@yandex.ru', '{noop}password2');
+INSERT INTO user_roles (role, user_id)
+VALUES ('ROLE_USER', 100023),
+       ('ROLE_USER', 100024);
+INSERT INTO votes (date_time, user_id, restaurant_id)
+VALUES ('2019-08-21 17:00:00', 100000, 100002),
+       ('2019-08-22 17:00:00', 100000, 100003);

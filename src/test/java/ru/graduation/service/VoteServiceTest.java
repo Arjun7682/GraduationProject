@@ -18,8 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.graduation.RestaurantTestData.MARKETPLACE;
 import static ru.graduation.RestaurantTestData.MCDONALDS;
 import static ru.graduation.UserTestData.*;
-import static ru.graduation.VoteTestData.USER_VOTE_ID;
-import static ru.graduation.VoteTestData.VOTE;
+import static ru.graduation.VoteTestData.*;
 
 @SpringJUnitConfig(locations = {
         "classpath:spring/spring-app.xml",
@@ -33,16 +32,16 @@ public class VoteServiceTest {
 
     @Test
     void create() throws Exception {
-        Vote vote = new Vote(of(2019, Month.AUGUST, 21, 17, 0), MCDONALDS, USER);
+        Vote vote = new Vote(of(2019, Month.AUGUST, 23, 17, 0), MCDONALDS, USER);
         voteService.create(vote, USER_ID);
-        VoteTestData.assertMatch(voteService.getAll(USER_ID), VOTE, vote);
+        VoteTestData.assertMatch(voteService.getAll(USER_ID), VOTE1, VOTE2, VOTE3, vote);
 
     }
 
     @Test
     void get() throws Exception {
         final Vote actual = voteService.get(USER_VOTE_ID, USER_ID);
-        VoteTestData.assertMatch(actual, VOTE);
+        VoteTestData.assertMatch(actual, VOTE1);
     }
 
     @Test
@@ -58,9 +57,9 @@ public class VoteServiceTest {
     @Test
     void update() throws Exception {
         //assumeFalse(LocalTime.now().isAfter(LocalTime.of(11, 0)), "You can not vote after 11:00");
-        Vote vote = new Vote(VOTE);
+        Vote vote = new Vote(VOTE1);
         vote.setRestaurant(MARKETPLACE);
-        int userId = VOTE.getUser().getId();
+        int userId = VOTE1.getUser().getId();
         voteService.create(vote, userId);
         VoteTestData.assertMatch(voteService.get(USER_VOTE_ID, userId), vote);
     }
@@ -97,6 +96,6 @@ public class VoteServiceTest {
 
     /*@Test
     void getAll() throws Exception {
-        VoteTestData.assertMatch(voteService.getAll(USER_ID), VOTE);
+        VoteTestData.assertMatch(voteService.getAll(USER_ID), VOTE1);
     }*/
 }

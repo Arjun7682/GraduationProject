@@ -35,7 +35,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
         expected.setId(returned.getId());
 
         assertMatch(returned, expected);
-        assertMatch(userService.getAll(), ADMIN, expected, USER);
+        assertMatch(userService.getAll(), ADMIN, expected, TEST1, TEST2, USER);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertMatch(userService.getAll(), ADMIN);
+        assertMatch(userService.getAll(), ADMIN, TEST1, TEST2);
     }
 
     @Test
@@ -99,6 +99,6 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(ADMIN, USER));
+                .andExpect(contentJson(ADMIN, TEST1, TEST2, USER));
     }
 }

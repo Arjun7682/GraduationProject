@@ -1,7 +1,6 @@
 package ru.graduation.repository;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,10 +22,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Query("SELECT DISTINCT r FROM Restaurant r JOIN FETCH r.dishes d WHERE d.dateTime=:dateTime")
     List<Restaurant> getRestaurantsByDate(@Param("dateTime") LocalDateTime localDateTime);
-
-    @EntityGraph(attributePaths = {"dishes"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT r FROM Restaurant r  WHERE r.id=:id")
-    Restaurant getWithDishes(@Param("id") int id);
 
     Restaurant getRestaurantById(int id);
 }

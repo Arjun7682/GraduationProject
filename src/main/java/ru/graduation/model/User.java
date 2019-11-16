@@ -53,6 +53,10 @@ public class User extends AbstractNamedEntity {
         this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRegistered(), user.isEnabled(), user.getRoles());
     }
 
+    public User(String name, String email, String password, Role role, Role... roles) {
+        this(null, name, email, password, LocalDateTime.now(), true, EnumSet.of(role, roles));
+    }
+
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
         this(id, name, email, password, LocalDateTime.now(), true, EnumSet.of(role, roles));
     }

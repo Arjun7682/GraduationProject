@@ -54,8 +54,8 @@ public class DishRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         DishTo updated = DishUtil.asTo(DISH1);
-        updated.setDescription("Update");
-        updated.setPrice(666);
+        updated.setDescription("Updated");
+        updated.setPrice(20010);
 
         mockMvc.perform(MockMvcRequestBuilders.put(REST_DISH_URL + MAC_DISH_ID)
                 .with(userHttpBasic(ADMIN))
@@ -77,7 +77,6 @@ public class DishRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         DishTestData.assertMatch(dishService.getDailyMenu(MCDONALDS_ID), DISH2, DISH3);
-
     }
 
     @Test

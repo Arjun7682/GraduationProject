@@ -43,12 +43,8 @@ public class RestaurantService {
         return repository.findAll(SORT_NAME);
     }
 
-    public List<Restaurant> getRestaurantsByDate(LocalDateTime date) {
-        return repository.getRestaurantsByDate(date);
-    }
-
-    public Restaurant getWithDish(int id) {
-        return checkNotFoundWithId(repository.getWithDishes(id), id);
+    public List<Restaurant> getRestaurantsByDate(LocalDateTime dateTime) {
+        return repository.getRestaurantsByDate(dateTime);
     }
 
     public void enable(int id, boolean enabled) {

@@ -16,7 +16,6 @@ import ru.graduation.to.RestaurantTo;
 import ru.graduation.util.RestaurantUtil;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,12 +50,6 @@ public class RestaurantRestController {
         return RestaurantUtil.asTo(service.get(id));
     }
 
-    @GetMapping("/dish/{id}")
-    public Restaurant getWithDish(@PathVariable int id) {
-        log.info("get restaurant with dishes by id {}", id);
-        return service.getWithDish(id);
-    }
-
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@Validated(View.Web.class) @RequestBody Restaurant restaurant, @PathVariable int id) {
@@ -71,7 +64,7 @@ public class RestaurantRestController {
     }
 
     @GetMapping("/all")
-    public List<RestaurantTo> getAll(@RequestParam(required = false) LocalDateTime localDateTime) {
-        return service.getRestaurantsByDate(localDateTime == null ? LocalDateTime.now() : localDateTime).stream().map(RestaurantUtil::asTo).collect(Collectors.toList());
+    public List<RestaurantTo> getAll() {
+        return service.getAll().stream().map(RestaurantUtil::asTo).collect(Collectors.toList());
     }
 }

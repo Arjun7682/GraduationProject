@@ -24,7 +24,7 @@ import static ru.graduation.TestUtil.*;
 import static ru.graduation.UserTestData.USER;
 import static ru.graduation.UserTestData.USER_ID;
 import static ru.graduation.VoteTestData.USER_VOTE_ID;
-import static ru.graduation.VoteTestData.VOTE;
+import static ru.graduation.VoteTestData.VOTE1;
 
 public class VoteRestControllerTest extends AbstractControllerTest {
     private final String REST_VOTE = VoteRestController.REST_VOTE_URL + "/";
@@ -58,13 +58,13 @@ public class VoteRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(result -> VoteTestData.assertMatch(readFromJsonMvcResult(result, VoteTo.class), VoteUtil.asTo(VOTE)));
+                .andExpect(result -> VoteTestData.assertMatch(readFromJsonMvcResult(result, VoteTo.class), VoteUtil.asTo(VOTE1)));
     }
 
     @Test
     void update() throws Exception {
         assumeFalse(LocalTime.now().isAfter(LocalTime.of(11, 0)), "You can not vote after 11:00");
-        VoteTo updated = VoteUtil.asTo(VOTE);
+        VoteTo updated = VoteUtil.asTo(VOTE1);
         updated.setRestaurantId(MCDONALDS_ID);
         mockMvc.perform(MockMvcRequestBuilders.put(REST_VOTE + USER_VOTE_ID)
                 .with(userAuth(USER))

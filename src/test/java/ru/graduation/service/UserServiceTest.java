@@ -33,7 +33,7 @@ public class UserServiceTest {
         User created = service.create(new User(newUser));
         newUser.setId(created.getId());
         assertMatch(created, newUser);
-        assertMatch(service.getAll(), ADMIN, newUser, USER);
+        assertMatch(service.getAll(), ADMIN, newUser, TEST1, TEST2, USER);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class UserServiceTest {
     @Test
     void delete() throws Exception {
         service.delete(USER_ID);
-        assertMatch(service.getAll(), ADMIN);
+        assertMatch(service.getAll(), ADMIN, TEST1, TEST2);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class UserServiceTest {
     @Test
     void getAll() throws Exception {
         List<User> all = service.getAll();
-        assertMatch(all, ADMIN, USER);
+        assertMatch(all, ADMIN, TEST1, TEST2, USER);
     }
 
     @Test
