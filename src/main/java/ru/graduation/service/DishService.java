@@ -41,7 +41,7 @@ public class DishService {
         checkNotFoundWithId(dishRepository.save(dish), dish.getId());
     }
 
-    public void update(DishTo dishTo){
+    public void update(DishTo dishTo) {
         Assert.notNull(dishTo, "dish must not be null");
         Dish dish = get(dishTo.getId());
         checkNotFoundWithId(dishRepository.save(DishUtil.updateFromTo(dish, dishTo)), dishTo.getId());

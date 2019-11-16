@@ -32,18 +32,6 @@ public class DishServiceTest {
     }
 
     @Test
-    public void delete() throws Exception {
-        service.delete(MAC_DISH_ID);
-        assertMatch(service.getDailyMenu(MCDONALDS_ID), DISH2, DISH3);
-    }
-
-    @Test
-    void deletedNotFound() throws Exception {
-        assertThrows(NotFoundException.class, () ->
-                service.delete(1));
-    }
-
-    @Test
     public void get() throws Exception {
         Dish actual = service.get(MAC_DISH_ID);
         assertMatch(actual, DISH1);
@@ -60,6 +48,18 @@ public class DishServiceTest {
         Dish updated = getUpdated();
         service.update(updated);
         assertMatch(service.get(MAC_DISH_ID), updated);
+    }
+
+    @Test
+    public void delete() throws Exception {
+        service.delete(MAC_DISH_ID);
+        assertMatch(service.getDailyMenu(MCDONALDS_ID), DISH2, DISH3);
+    }
+
+    @Test
+    void deletedNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () ->
+                service.delete(1));
     }
 
     @Test

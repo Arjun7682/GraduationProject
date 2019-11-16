@@ -21,6 +21,30 @@ public class RestaurantRestControllerTest extends AbstractControllerTest {
     private static final String REST_URL = RestaurantRestController.REST_REST_URL + "/";
 
     @Test
+    void createWithLocation() throws Exception {
+        Restaurant expected = new Restaurant(null, "New");
+        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
+                .with(userHttpBasic(ADMIN))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(expected)))
+                .andExpect(status().isCreated());
+
+        Restaurant returned = readFromJson(action, Restaurant.class);
+        expected.setId(returned.getId());
+
+        RestaurantTestData.assertMatch(returned, expected);
+    }
+
+    @Test
+    void get() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + MCDONALDS_ID))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(MCDONALDS));
+    }
+
+    @Test
     void update() throws Exception {
         Restaurant updated = new Restaurant(MCDONALDS);
         updated.setName("Updated");
@@ -35,35 +59,10 @@ public class RestaurantRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void get() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + MCDONALDS_ID))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(MCDONALDS));
-    }
-
-    @Test
     void delete() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + MCDONALDS_ID)
                 .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk());
         RestaurantTestData.assertMatch(restaurantService.getAll(), BIGKAHUNABURGER, KFC, MARKETPLACE, TEREMOK);
-    }
-
-
-    @Test
-    void createWithLocation() throws Exception {
-        Restaurant expected = new Restaurant(null, "New");
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
-                .with(userHttpBasic(ADMIN))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(expected)))
-                .andExpect(status().isCreated());
-
-        Restaurant returned = readFromJson(action, Restaurant.class);
-        expected.setId(returned.getId());
-
-        RestaurantTestData.assertMatch(returned, expected);
     }
 }

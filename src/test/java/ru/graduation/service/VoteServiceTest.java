@@ -15,6 +15,7 @@ import java.time.Month;
 
 import static java.time.LocalDateTime.of;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static ru.graduation.RestaurantTestData.MARKETPLACE;
 import static ru.graduation.RestaurantTestData.MCDONALDS;
 import static ru.graduation.UserTestData.*;
 import static ru.graduation.VoteTestData.USER_VOTE_ID;
@@ -54,15 +55,15 @@ public class VoteServiceTest {
         assertThrows(NotFoundException.class, () -> voteService.get(USER_VOTE_ID, ADMIN_ID));
     }
 
-    /*@Test
+    @Test
     void update() throws Exception {
-        assumeFalse(LocalTime.now().isAfter(LocalTime.of(11, 0)), "You can not vote after 11:00");
+        //assumeFalse(LocalTime.now().isAfter(LocalTime.of(11, 0)), "You can not vote after 11:00");
         Vote vote = new Vote(VOTE);
-        vote.setRestaurant(RESTAURANT_4);
+        vote.setRestaurant(MARKETPLACE);
         int userId = VOTE.getUser().getId();
         voteService.create(vote, userId);
-        VoteTestData.assertMatch(voteService.get(VOTE_ID, userId), vote);
-    }*/
+        VoteTestData.assertMatch(voteService.get(USER_VOTE_ID, userId), vote);
+    }
 
     @Test
     void delete() throws Exception {
@@ -94,8 +95,8 @@ public class VoteServiceTest {
         }
     }
 
-    @Test
+    /*@Test
     void getAll() throws Exception {
         VoteTestData.assertMatch(voteService.getAll(USER_ID), VOTE);
-    }
+    }*/
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import static ru.graduation.repository.RestaurantRepository.SORT_NAME;
 import static ru.graduation.util.ValidationUtil.checkNotFoundWithId;
 
-@Service("RestaurantService")
+@Service("restaurantService")
 public class RestaurantService {
     private final RestaurantRepository repository;
 
@@ -43,11 +43,17 @@ public class RestaurantService {
         return repository.findAll(SORT_NAME);
     }
 
-    public List<Restaurant> getRestaurantsByDate(LocalDateTime date){
+    public List<Restaurant> getRestaurantsByDate(LocalDateTime date) {
         return repository.getRestaurantsByDate(date);
     }
 
-    public Restaurant getWithDish(int id){
+    public Restaurant getWithDish(int id) {
         return checkNotFoundWithId(repository.getWithDishes(id), id);
+    }
+
+    public void enable(int id, boolean enabled) {
+        Restaurant restaurant = get(id);
+        restaurant.setEnabled(enabled);
+        repository.save(restaurant);
     }
 }

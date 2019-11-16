@@ -26,15 +26,6 @@ public class DishRestControllerTest extends AbstractControllerTest {
     private static final String REST_DISH_URL = DishRestController.REST_DISH_URL + "/";
 
     @Test
-    void get() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_DISH_URL + MAC_DISH_ID))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(result -> DishTestData.assertMatch(readFromJsonMvcResult(result, Dish.class), DISH1));
-    }
-
-    @Test
     void createWithLocation() throws Exception {
         DishTo expected = new DishTo(null, LocalDateTime.of(2015, 06, 01, 0, 0), MCDONALDS_ID, "New", 20000);
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_DISH_URL)
@@ -49,6 +40,15 @@ public class DishRestControllerTest extends AbstractControllerTest {
         created.setId(returned.getId());
 
         DishTestData.assertMatch(returned, created);
+    }
+
+    @Test
+    void get() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_DISH_URL + MAC_DISH_ID))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(result -> DishTestData.assertMatch(readFromJsonMvcResult(result, Dish.class), DISH1));
     }
 
     @Test
@@ -80,8 +80,8 @@ public class DishRestControllerTest extends AbstractControllerTest {
 
     }
 
-    /*@Test
-    void getAllByRestaurant() throws Exception {
+    @Test
+    void getDailyMenu() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_DISH_URL)
                 .param("restaurantId", "100002"))
                 .andDo(print())
@@ -89,15 +89,4 @@ public class DishRestControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(DISH1, DISH2, DISH3));
     }
-
-    @Test
-    void getAllByRestaurantAndDate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_DISH_URL)
-                .param("restaurantId", "100020")
-                .param("localDate", "2019-08-10"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(DISH1, DISH2, DISH3));
-    }*/
 }

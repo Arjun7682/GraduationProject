@@ -43,18 +43,6 @@ public class UserServiceTest {
     }
 
     @Test
-    void delete() throws Exception {
-        service.delete(USER_ID);
-        assertMatch(service.getAll(), ADMIN);
-    }
-
-    @Test
-    void deletedNotFound() throws Exception {
-        assertThrows(NotFoundException.class, () ->
-                service.delete(1));
-    }
-
-    @Test
     void get() throws Exception {
         User user = service.get(ADMIN_ID);
         assertMatch(user, ADMIN);
@@ -79,6 +67,18 @@ public class UserServiceTest {
         updated.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
         service.update(new User(updated));
         assertMatch(service.get(USER_ID), updated);
+    }
+
+    @Test
+    void delete() throws Exception {
+        service.delete(USER_ID);
+        assertMatch(service.getAll(), ADMIN);
+    }
+
+    @Test
+    void deletedNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () ->
+                service.delete(1));
     }
 
     @Test

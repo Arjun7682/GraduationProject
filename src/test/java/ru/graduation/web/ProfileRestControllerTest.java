@@ -34,6 +34,19 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void update() throws Exception {
+        UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL)
+                .with(userAuth(USER))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonWithPassword(updatedTo, updatedTo.getPassword())))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        assertMatch(userService.getByEmail("newemail@ya.ru"), UserUtil.updateFromTo(new User(USER), updatedTo));
+    }
+
+    @Test
     void delete() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL)
                 .with(userHttpBasic(USER)))
@@ -57,18 +70,5 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
 
         assertMatch(returned, created);
         assertMatch(userService.getByEmail("newemail@ya.ru"), created);
-    }
-
-    @Test
-    void update() throws Exception {
-        UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
-        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL)
-                .with(userAuth(USER))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonWithPassword(updatedTo, updatedTo.getPassword())))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-
-        assertMatch(userService.getByEmail("newemail@ya.ru"), UserUtil.updateFromTo(new User(USER), updatedTo));
     }
 }

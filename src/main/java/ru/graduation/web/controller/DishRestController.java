@@ -39,7 +39,7 @@ public class DishRestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<Dish> createFromContext(@Validated(View.Web.class) @RequestBody DishTo dishTo) {
+    public ResponseEntity<Dish> createWithLocation(@Validated(View.Web.class) @RequestBody DishTo dishTo) {
         Restaurant restaurant = restaurantService.get(dishTo.getRestaurantId());
         Dish created = DishUtil.createNewFromTo(dishTo, restaurant);
         Dish dish = dishService.create(created);

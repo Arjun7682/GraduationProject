@@ -33,17 +33,6 @@ public class VoteRestControllerTest extends AbstractControllerTest {
     VoteService voteService;
 
     @Test
-    void get() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_VOTE + USER_VOTE_ID)
-                .with(userAuth(USER))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(result -> VoteTestData.assertMatch(readFromJsonMvcResult(result, VoteTo.class), VoteUtil.asTo(VOTE)));
-    }
-
-    @Test
     void createWithLocation() throws Exception {
         VoteTo expected = new VoteTo(null, MCDONALDS_ID);
 
@@ -62,13 +51,14 @@ public class VoteRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void delete() throws Exception {
-
-        assumeFalse(LocalTime.now().isAfter(LocalTime.of(11, 0)), "You can not vote after 11:00");
-        mockMvc.perform(MockMvcRequestBuilders.delete(REST_VOTE + USER_VOTE_ID)
-                .with(userAuth(USER)))
+    void get() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_VOTE + USER_VOTE_ID)
+                .with(userAuth(USER))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(result -> VoteTestData.assertMatch(readFromJsonMvcResult(result, VoteTo.class), VoteUtil.asTo(VOTE)));
     }
 
     @Test
@@ -84,6 +74,16 @@ public class VoteRestControllerTest extends AbstractControllerTest {
 
         VoteTo actual = VoteUtil.asTo(voteService.get(USER_VOTE_ID, USER_ID));
         VoteTestData.assertMatch(actual, updated);
+    }
+
+    @Test
+    void delete() throws Exception {
+
+        assumeFalse(LocalTime.now().isAfter(LocalTime.of(11, 0)), "You can not vote after 11:00");
+        mockMvc.perform(MockMvcRequestBuilders.delete(REST_VOTE + USER_VOTE_ID)
+                .with(userAuth(USER)))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test

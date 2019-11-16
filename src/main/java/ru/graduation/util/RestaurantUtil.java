@@ -5,7 +5,7 @@ import ru.graduation.to.RestaurantTo;
 
 public class RestaurantUtil {
 
-    public static RestaurantTo asTo (Restaurant restaurant){
+    public static RestaurantTo asTo(Restaurant restaurant) {
         return new RestaurantTo(restaurant.getId(), restaurant.getName());
     }
 }

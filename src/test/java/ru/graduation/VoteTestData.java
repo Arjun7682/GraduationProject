@@ -29,6 +29,4 @@ public class VoteTestData {
     public static void assertMatch(Iterable<Vote> actual, Iterable<Vote> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("restaurant", "user").isEqualTo(expected);
     }
-
-
 }

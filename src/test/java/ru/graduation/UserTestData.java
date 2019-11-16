@@ -49,32 +49,4 @@ public class UserTestData {
     public static String jsonWithPassword(UserTo user, String password) {
         return JsonUtil.writeAdditionProps(user, "password", password);
     }
-
-    /*public static <T> void assertMatch(T actual, T expected) {
-        assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered", "password");
-    }
-
-    public static void assertMatch(Iterable<User> actual, User... expected) {
-        assertMatch(actual, Lists.newArrayList(expected));
-    }
-
-    public static <T> void assertMatch (Iterable<T> actual, Iterable<T> expected) {
-        assertThat(actual).usingElementComparatorIgnoringFields("registered", "password").isEqualTo(expected);
-    }
-
-    public static ResultMatcher contentJson(User... expected) {
-        return result -> assertMatch(readListFromJsonMvcResult(result, User.class), Lists.newArrayList(expected));
-    }
-
-    public static ResultMatcher contentJson(User expected) {
-        return result -> assertMatch(readFromJsonMvcResult(result, User.class), expected);
-    }
-
-    public static String jsonWithPassword(UserTo user, String passw) {
-        return JsonUtil.writeAdditionProps(user, "password", passw);
-    }
-
-    public static String jsonWithPassword(User user, String passw) {
-        return JsonUtil.writeAdditionProps(user, "password", passw);
-    }*/
 }

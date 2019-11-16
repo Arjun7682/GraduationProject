@@ -11,7 +11,7 @@ import ru.graduation.util.exception.NotFoundException;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static ru.graduation.RestaurantTestData.*;
 
 @SpringJUnitConfig(locations = {
@@ -40,18 +40,6 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    void delete() throws Exception {
-        service.delete(KFC_ID);
-        assertMatch(service.getAll(), BIGKAHUNABURGER, MARKETPLACE, MCDONALDS, TEREMOK);
-    }
-
-    @Test
-    void deletedNotFound() throws Exception {
-        assertThrows(NotFoundException.class, () ->
-                service.delete(1));
-    }
-
-    @Test
     void get() throws Exception {
         Restaurant restaurant = service.get(MARKETPLACE_ID);
         assertMatch(restaurant, MARKETPLACE);
@@ -71,16 +59,29 @@ public class RestaurantServiceTest {
     }
 
     @Test
+    void delete() throws Exception {
+        service.delete(KFC_ID);
+        assertMatch(service.getAll(), BIGKAHUNABURGER, MARKETPLACE, MCDONALDS, TEREMOK);
+    }
+
+    @Test
+    void deletedNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () ->
+                service.delete(1));
+    }
+
+
+    @Test
     void getAll() throws Exception {
         List<Restaurant> all = service.getAll();
         assertMatch(all, RESTAURANTS);
     }
 
-    /*@Test
+    @Test
     void enable() {
-        service.enable(USER_ID, false);
-        assertFalse(service.get(USER_ID).isEnabled());
-        service.enable(USER_ID, true);
-        assertTrue(service.get(USER_ID).isEnabled());
-    }*/
+        service.enable(MARKETPLACE_ID, false);
+        assertFalse(service.get(MARKETPLACE_ID).isEnabled());
+        service.enable(MARKETPLACE_ID, true);
+        assertTrue(service.get(MARKETPLACE_ID).isEnabled());
+    }
 }
